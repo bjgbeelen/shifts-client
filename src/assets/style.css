@@ -1,0 +1,310 @@
+@media print {
+  @page {size: landscape}
+
+  #calendar {
+    width: 100%;
+  }
+
+  .month {
+    page-break-before: always;
+    page-break-inside: avoid;
+  }
+
+  #resources {
+    margin: 0px;
+    width: 0%;
+  }
+}
+
+@media screen {
+    #calendar {
+    width: 80%;
+  }
+
+  #resources {
+    margin: 10px;
+    width: 18%;
+  }
+}
+
+@media all {
+  .calendarView {
+  width: 100%;
+  height: 100%;
+
+}
+
+#calendar {
+  overflow: scroll;
+}
+
+#counters {
+  float: left;
+  height: 200px;
+  overflow: hidden;
+}
+
+.container {
+  float: left;
+}
+
+.weekTag {
+  background-color: #eeeeee;
+}
+
+.weekendTag {
+  background-color: #bde4c7;
+}
+
+.task.ignoreTag {
+  color: #aaaaaa;
+}
+
+.feestTag {
+  background-color: #bedfea;
+}
+
+.absentTag {
+  background-color: #ffdade;
+ }
+
+.highlight {
+  border: 1px dashed black;
+  border-left: 0px;
+  color: #aaaaaa;
+}
+
+.year {
+  margin-bottom: 20px;
+}
+
+.month {
+  margin-bottom: 50px;
+}
+
+.month .week {
+  width: 100%;
+  margin-bottom: 1px;
+  height: 220px;
+}
+
+.month .header {
+  width: 98%;
+  margin-left: 2%;
+  background-color: #ffffff;
+}
+
+.month .header .title {
+  font-size: 24px;
+  padding-bottom: 4px;
+  margin-left: 4px;
+}
+
+.weeks-container {
+  width: 100%;
+  overflow: hidden;
+}
+
+.month .header .weekday-container {
+  overflow: hidden;
+  width: 100%;
+}
+
+.boxed {
+  box-sizing:border-box;
+  -moz-box-sizing:border-box;
+  -webkit-box-sizing:border-box;
+  border-color: white;
+  border-style: solid;
+  border-width: 2px 2px 1px 2px;
+}
+
+.weekday {
+  width: 14.2857%;
+  height: 30px;
+  background-color: #cccccc;
+  float: right;
+  line-height: 27px;
+  color: #555666;
+  text-align: center;  
+  position: relative;
+}
+
+.week .weeknumber-container {
+  height: 100%;
+  width: 2%;
+  float: left;
+  background-color: #cccccc;
+  position: relative;
+}
+
+.weeknumber-container .number {  
+  color: #555666;
+  width: 100%;
+  text-align: center;
+  height: 16px;
+  position: absolute;
+  top: 50%;
+  margin-top: -8px;
+  cursor: pointer;
+}
+
+.days-container {
+  width: 98%;
+  overflow: hidden;
+  float: right;
+  background-color: #ffffff;
+}
+
+.month .week:first-of-type .day {
+  float: right;
+}
+
+.month .week:last-of-type .day {
+  float: left;
+}
+
+.day {
+  float: left;
+  width: 14.2857%;
+  height: 100%;
+}
+
+.day .dayHeader {
+  width: 100%;
+  height: 68px;
+  margin-left: 0%;
+}
+
+.day .number {
+  float: right;
+  margin-right: 8px;
+  font-size: 48px;
+  cursor: pointer;
+}
+
+.day .dayHeader .label {
+  float: left;
+  margin-top: 20px;
+  margin-left: 10px;
+}
+
+.tasks-container {
+  margin-left: 0%;
+  width: 100%;
+}
+
+.counter {
+  margin: 10px;
+}
+
+.counter .head {
+  text-transform: uppercase;
+  valign: center;
+}
+
+.counter .column.no-top {
+  border-top: 0px;
+}
+
+.counter .secondLevelLabel {
+   -ms-transform: rotate(-18deg); /* IE 9 */
+    -webkit-transform: rotate(-18deg); /* Chrome, Safari, Opera */
+    transform: rotate(-18deg);
+    font-size: 13px;
+    margin-left: 10px;
+}
+
+.counter .secondLevelCount {
+  text-align: center;
+}
+
+.counter .column {
+  border-top: 1px solid black;
+  border-right: 1px solid black;
+}
+
+.counter .column:last-child {
+  border-right: 0px;
+}
+
+.counterContainer {
+  float: left;
+  width: 100%;
+  margin-top: 20px;
+}
+
+.username {
+  font-size: 32px;
+}
+
+.task {
+  width: 100%;
+  float: left;
+  margin-top: 0px;
+}
+
+.task .info {
+  width: 40%;
+  float: left;
+  border-right: 1px solid #4c6ba2;
+  box-sizing:border-box;
+  -moz-box-sizing:border-box;
+  -webkit-box-sizing:border-box;
+  padding: 3px;
+  cursor: pointer;
+}
+
+.task .info .label {
+  font-size: 10px;
+  font-weight: bold;
+  text-align: right;
+}
+
+.task .info .time {
+  font-size: 8px;
+  text-align: right;
+  font-family: 'Helvetica';
+}
+
+.resource {
+  cursor: default;
+  margin: 4px;
+  border: 0px solid #333333;
+  float: left;
+}
+
+.resourceContainer {
+  float: left;
+}
+
+.resourceContainer .resource {
+  padding: 4px;
+}
+
+.task .assignment {
+  margin-top: 0px;
+  width: 57%;
+  float: left;
+  font-size: 12px;
+  font-family: 'Helvetica';
+  box-sizing:border-box;
+  -moz-box-sizing:border-box;
+  -webkit-box-sizing:border-box;
+  padding: 3px;
+  cursor: default;
+  height: 25px;
+}
+
+.task .notAllowed {
+  color: #999999;
+  border-right: 1px solid #999999;
+}
+
+
+body {
+  font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
+  font-size: 12px;
+}
+
+}
