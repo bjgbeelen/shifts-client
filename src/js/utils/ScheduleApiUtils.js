@@ -4,7 +4,7 @@ import $ from 'jquery';
 export default {
   getSchedule: () => {
     $.ajax({
-      url: 'http://localhost:5000/calendars/2016/schedules/Opzet',
+      url: '/api/calendars/2016/schedules/Opzet',
       dataType: 'json',
       cache: false,
       success: function(data) {
@@ -18,7 +18,7 @@ export default {
   addAssignment: (taskId, resourceId) => {
     ScheduleActions.addAssignment(taskId, resourceId)
     $.ajax({
-      url: 'http://localhost:5000/calendars/2016/schedules/Opzet/' + taskId + '/' + resourceId,
+      url: '/api/calendars/2016/schedules/Opzet/' + taskId + '/' + resourceId,
       dataType: 'text',
       method: 'POST',
       cache: false,
@@ -35,7 +35,7 @@ export default {
   removeAssignment: (taskId, resourceId) => {
     ScheduleActions.removeAssignment(taskId, resourceId)
     $.ajax({
-      url: 'http://localhost:5000/calendars/2016/schedules/Opzet/' + taskId,
+      url: '/api/calendars/2016/schedules/Opzet/' + taskId,
       //dataType: 'text',
       method: 'DELETE',
       cache: false,
@@ -51,7 +51,7 @@ export default {
   },
   updateResourceConstraints: (constraints) => {
     $.ajax({
-      url: 'http://localhost:5000/calendars/2016/schedules/Opzet/constraints',
+      url: '/api/calendars/2016/schedules/Opzet/constraints',
       //dataType: 'text',
       data: JSON.stringify(constraints),
       contentType: 'application/json',
