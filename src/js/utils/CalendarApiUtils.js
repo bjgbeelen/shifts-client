@@ -4,7 +4,7 @@ import $ from 'jquery';
 export default {
   getCalendar: () => {
     $.ajax({
-      url: '/api/calendars/2016',
+      url: '/api/calendars/2017',
       dataType: 'json',
       cache: false,
       success: function(data) {

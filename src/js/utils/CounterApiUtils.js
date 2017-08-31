@@ -4,7 +4,7 @@ import $ from 'jquery';
 export default {
   getCounters: () => {
     $.ajax({
-      url: '/api/calendars/2016/counters',
+      url: '/api/calendars/2017/counters',
       dataType: 'json',
       cache: false,
       success: function(data) {

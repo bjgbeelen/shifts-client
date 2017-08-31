@@ -18,12 +18,12 @@
 
 @media screen {
     #calendar {
-    width: 80%;
+    width: 74%;
   }
 
   #resources {
     margin: 10px;
-    width: 18%;
+    width: 24%;
   }
 }
 
@@ -35,12 +35,12 @@
 }
 
 #calendar {
-  overflow: scroll;
+  /*overflow: scroll;*/
 }
 
 #counters {
   float: left;
-  height: 200px;
+  height: 390px;
   overflow: hidden;
 }
 

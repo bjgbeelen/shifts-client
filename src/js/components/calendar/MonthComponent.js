@@ -4,8 +4,9 @@ import React from 'react';
 export default class MonthComponent extends React.Component {
   render() {
     const {year, data} = this.props;
+    // const nrOfWeeks = data.
     const weeks = data.weeks.map( (w, i) => {
-      return <WeekComponent data={w} key={w.week} firstWeekOfMonth={i==0} />
+      return <WeekComponent data={w} key={w.week} firstWeekOfMonth={i==0} multipleWeeks={data.weeks.length > 1}/>
     });
     return <div className="month">
       <div className="header">

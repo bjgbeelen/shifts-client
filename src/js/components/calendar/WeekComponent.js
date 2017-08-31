@@ -16,8 +16,8 @@ export default class WeekComponent extends React.Component {
   }
 
   render() {
-    const {data, firstWeekOfMonth} = this.props;
-    const daysData = (firstWeekOfMonth) ? data.days.reverse() : data.days;
+    const {data, firstWeekOfMonth, multipleWeeks} = this.props;
+    const daysData = (firstWeekOfMonth && multipleWeeks) ? data.days.reverse() : data.days;
     const days = daysData.map( d => {
       return <DayComponent data={d} key={d.day} />
     });
