@@ -4,7 +4,7 @@ import $ from 'jquery';
 export default {
   getResources: () => {
     $.ajax({
-      url: '/api/calendars/2017/resources',
+      url: '/api/calendars/2018/resources',
       dataType: 'json',
       cache: false,
       success: function(data) {
@@ -13,6 +13,6 @@ export default {
       error: function(xhr, status, err) {
         console.error('assets/calendar.json', status, err.toString());
       }.bind(this)
-    }); 
+    });
   }
 }

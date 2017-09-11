@@ -9,7 +9,7 @@ export default class CounterComponent extends React.Component {
     this.updateTasks = this.updateTasks.bind(this);
     this.updateAssignments = this.updateAssignments.bind(this);
     this.updateDesiredTasks = this.updateDesiredTasks.bind(this);
-    this.state = {counters: [], taskCount: {}, assignmentCount: {}};
+    this.state = {counters: {}, taskCount: {}, assignmentCount: {}};
   }
   assignmentCount(counter) {
     return this.state.assignmentCount[counter] || '0';
@@ -26,14 +26,14 @@ export default class CounterComponent extends React.Component {
     ScheduleStore.onScheduleUpdated(this.updateDesiredTasks);
   }
   render() {
-    const secondLevelLabels = this.props.data.children.map(c => {
-      return <td key={c.id}><div className="secondLevelLabel">{c.name}</div></td>
+    const secondLevelLabels = this.props.data.map(c => {
+      return <td key={c.name}><div className="secondLevelLabel">{c.name}</div></td>
     })
-    const secondLevelAssignmentCount = this.props.data.children.map(c => {
-      return <td key={c.id} className="column  no-top"><div className="secondLevelCount">{this.assignmentCount(c.id)}</div></td>
+    const secondLevelAssignmentCount = this.props.data.map(c => {
+      return <td key={c.name} className="column  no-top"><div className="secondLevelCount">{this.assignmentCount(c.id)}</div></td>
     })
-    const secondLevelTaskCount = this.props.data.children.map(c => {
-      return <td key={c.id} className="column"><div className="secondLevelCount">{this.taskCount(c.id)}</div></td>
+    const secondLevelTaskCount = this.props.data.map(c => {
+      return <td key={c.name} className="column"><div className="secondLevelCount">{this.taskCount(c.id)}</div></td>
     })
     return <table className="counter" cellSpacing="0">
       <tr>
@@ -41,7 +41,7 @@ export default class CounterComponent extends React.Component {
         {secondLevelLabels}
       </tr>
       <tr>
-        <td rowSpan="2" valign="center"><div className="head">{this.props.data.name}</div></td>
+        <td rowSpan="2" valign="center"><div className="head">{this.props.name}</div></td>
         {secondLevelAssignmentCount}
       </tr>
       <tr>
@@ -52,7 +52,7 @@ export default class CounterComponent extends React.Component {
   }
   updateTasks() {
     if (this.props.resource == undefined) {
-      this.setState(TaskStore.calculate(this.props.data));      
+      this.setState(TaskStore.calculate(this.props.data));
     }
     this.updateAssignments();
     this.updateDesiredTasks();

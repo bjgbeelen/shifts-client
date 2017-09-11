@@ -6,15 +6,15 @@ export default class CounterListComponent extends React.Component {
   constructor() {
     super();
     this.updateState = this.updateState.bind(this);
-    this.state = {counters: []};
+    this.state = {counters: {}};
   }
   componentDidMount() {
     this.updateState();
     CounterStore.onCountersUpdated(this.updateState);
   }
   render() {
-    const counters = this.state.counters.map( counter =>
-      <CounterComponent data={counter} key={counter.id}/>
+    const counters = Object.keys(this.state.counters).map( counterGroup =>
+        <CounterComponent data={this.state.counters[counterGroup]} key={counterGroup} name={counterGroup}/>
     )
     return <div className="counterContainer"><div className="username" id="algemeen">Algemeen</div>{counters}</div>
   }

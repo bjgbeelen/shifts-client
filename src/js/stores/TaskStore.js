@@ -2,7 +2,7 @@ import AppDispatcher from '../dispatchers/AppDispatcher';
 import {Constants} from '../constants/Constants';
 import {EventEmitter} from 'events';
 
-class TaskStore extends EventEmitter {  
+class TaskStore extends EventEmitter {
   onTasksUpdated(dayId, callback) {
     this.on(tasksUpdatedForDay(dayId), callback);
   }
@@ -11,7 +11,7 @@ class TaskStore extends EventEmitter {
     this.on(Constants.TASK.UPDATED, callback);
   }
 
-  calculate(counter) {    
+  calculate(counter) {
     return {taskCount: calculateCounter(counter, toList(_tasks))};
   }
 
@@ -41,7 +41,7 @@ let _tasks = {};
 let taskStore = new TaskStore();
 
 AppDispatcher.register( payload => {
-  var action = payload.action;  
+  var action = payload.action;
 
   switch(action.type) {
     case Constants.TASK.UPDATE:
@@ -64,23 +64,15 @@ function toList(tasks) {
   },[])
 }
 
-function calculateCounter(counter, tasks) {
+function calculateCounter(counters, tasks) {
   let result = {}
-
-  const filteredTasks = tasks.filter(task => {
-    return counter.include.every(tag => {return task.tags.indexOf(tag) >= 0})
-      && counter.exclude.every(tag => {return task.tags.indexOf(tag) < 0})
-  });
-  result[counter.id] = filteredTasks.length;
-
-  if (counter.children.length > 0) {
-    counter.children.forEach(childCounter => {
-      const counts = calculateCounter(childCounter, filteredTasks)
-      Object.keys(counts).map(key => {
-        result[key] = counts[key];
-      })
-    })
-  } 
+  counters.forEach(counter => {
+    const filteredTasks = tasks.filter(task => {
+      return counter.include.every(tag => {return task.tags.indexOf(tag) >= 0})
+        && counter.exclude.every(tag => {return task.tags.indexOf(tag) < 0})
+    });
+    result[counter.id] = filteredTasks.length;
+  })
 
   return result;
 }

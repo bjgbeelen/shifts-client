@@ -12,7 +12,7 @@ class ScheduleStore extends EventEmitter {
 
   onScheduleUpdated(callback) {
     this.on(Constants.SCHEDULE.UPDATED, callback);
-  }  
+  }
 
   onAssignmentUpdated(taskId, callback) {
     this.on(assignmentUpdatedForTask(taskId), callback);
@@ -27,13 +27,15 @@ class ScheduleStore extends EventEmitter {
   }
 
   isAbsent(dayId, resourceId) {
-    const resourceConstraints = selectResourceConstraints(resourceId)
-    return resourceConstraints && resourceConstraints.absence.filter( item => {
-      return item == dayId
-    }).length > 0
+    // FIX ME
+    // const resourceConstraints = selectResourceConstraints(resourceId)
+    // return resourceConstraints && resourceConstraints.absence.filter( item => {
+    //   return item == dayId
+    // }).length > 0
+    return false
   }
 
-  calculate(counter, resource) {    
+  calculate(counter, resource) {
     const filteredAssignments = Object.keys(_schedule.assignments).filter( key => {
       return resource == undefined || _schedule.assignments[key] == resource;
     });
@@ -42,13 +44,17 @@ class ScheduleStore extends EventEmitter {
   }
 
   getDesiredCounts(resource) {
-    const counts = _schedule.resourceConstraints.filter( item => {
-      return item.resourceId == resource;
-    })[0];
-    if (counts == undefined) { 
+    const constraints = _schedule.resourceConstraints[resource]
+    if (constraints == undefined) {
       return {taskCount: []}
     } else {
-      return {taskCount: counts.desiredNumberOfTasks};
+      let result = {}
+        constraints
+        .filter( constraint => { return constraint.type == "CounterConstraint" })
+        .forEach( counterConstraint =>
+          result[counterConstraint.counterId] = counterConstraint.desiredNumber
+        )
+      return {taskCount: result};
     }
   }
 
@@ -63,17 +69,16 @@ class ScheduleStore extends EventEmitter {
 
 let _schedule = {
   assignments: [],
-  resourceConstraints: []
+  resourceConstraints: {}
 };
 let scheduleStore = new ScheduleStore();
 
 AppDispatcher.register( payload => {
-  const action = payload.action;  
+  const action = payload.action;
 
   switch(action.type) {
     case Constants.SCHEDULE.UPDATE:
-      console.log('schedule updated...!!!')
-      _schedule = action.schedule;      
+      _schedule = action.schedule;
       scheduleStore.emit(Constants.SCHEDULE.UPDATED);
       Object.keys(_schedule.assignments).forEach( taskId => {
         scheduleStore.emit(assignmentUpdatedForTask(taskId));
@@ -101,9 +106,7 @@ AppDispatcher.register( payload => {
 });
 
 function selectResourceConstraints(resource) {
-  return _schedule.resourceConstraints.filter( item => {
-    return item.resourceId == resource;
-  })[0];
+  return _schedule.resourceConstraints[resource]
 }
 
 function toggleAbsence(absence, days) {
@@ -120,23 +123,15 @@ function assignmentUpdatedForTask(taskId) {
   return Constants.ASSIGNMENT.UPDATED + '_' + taskId;
 }
 
-function calculateCounter(counter, tasks) {
+function calculateCounter(counters, tasks) {
   let result = {}
-
-  const filteredTasks = tasks.filter(task => {
-    return counter.include.every(tag => {return task.tags.indexOf(tag) >= 0})
-      && counter.exclude.every(tag => {return task.tags.indexOf(tag) < 0})
-  });
-  result[counter.id] = filteredTasks.length;
-
-  if (counter.children.length > 0) {
-    counter.children.forEach(childCounter => {
-      const counts = calculateCounter(childCounter, filteredTasks)
-      Object.keys(counts).map(key => {
-        result[key] = counts[key];
-      })
-    })
-  } 
+  counters.forEach(counter => {
+    const filteredTasks = tasks.filter(task => {
+      return counter.include.every(tag => {return task.tags.indexOf(tag) >= 0})
+        && counter.exclude.every(tag => {return task.tags.indexOf(tag) < 0})
+    });
+    result[counter.id] = filteredTasks.length;
+  })
 
   return result;
 }

@@ -7,7 +7,7 @@ export default class ResourceCounterListComponent extends React.Component {
   constructor() {
     super();
     this.updateState = this.updateState.bind(this);
-    this.state = {counters: [], resources: []};
+    this.state = {counters: {}, resources: []};
   }
   componentDidMount() {
     this.updateState();
@@ -16,9 +16,9 @@ export default class ResourceCounterListComponent extends React.Component {
   }
   render() {
     const resourceCounters = this.state.resources.map( item => {
-      const counters = this.state.counters.map( counter => {
-        return <CounterComponent resource={item.id} data={counter} key={counter.id}/>
-      }) 
+      const counters = Object.keys(this.state.counters).map( counterGroup => {
+        return <CounterComponent resource={item.id} data={this.state.counters[counterGroup]} key={counterGroup} name={counterGroup}/>
+      })
       return <div className="counterContainer" key={item.id}><div className="username" id={"counter" + item.id}>{item.name}</div>{counters}</div>
     })
     return <div className="resourceCounterContainer">{resourceCounters}</div>

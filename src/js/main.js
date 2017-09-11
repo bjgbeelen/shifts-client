@@ -8,10 +8,12 @@ import CounterApiUtils from './utils/CounterApiUtils';
 import $ from 'jquery';
 import React from 'react';
 
+var searchParams = new URLSearchParams(window.location.search); //?anything=123
+
 CalendarApiUtils.getCalendar();
 TaskApiUtils.getTasks();
 ResourceApiUtils.getResources();
-ScheduleApiUtils.getSchedule();
+ScheduleApiUtils.getSchedule(searchParams.get("schedule"));
 CounterApiUtils.getCounters();
 
 $(document).on("dblclick", () => {

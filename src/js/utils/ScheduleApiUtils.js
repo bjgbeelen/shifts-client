@@ -2,9 +2,9 @@ import ScheduleActions from '../actions/ScheduleActions';
 import $ from 'jquery';
 
 export default {
-  getSchedule: () => {
+  getSchedule: (scheduleName) => {
     $.ajax({
-      url: '/api/calendars/2017/schedules/Opzet',
+      url: '/api/calendars/2018/schedules/' + scheduleName,
       dataType: 'json',
       cache: false,
       success: function(data) {
@@ -13,7 +13,7 @@ export default {
       error: function(xhr, status, err) {
         console.error('assets/calendar.json', status, err.toString());
       }.bind(this)
-    }); 
+    });
   },
   addAssignment: (taskId, resourceId) => {
     ScheduleActions.addAssignment(taskId, resourceId)
@@ -30,7 +30,7 @@ export default {
       error: function(xhr, status, err) {
         console.error('assets/calendar.json', status, err.toString());
       }.bind(this)
-    }); 
+    });
   },
   removeAssignment: (taskId, resourceId) => {
     ScheduleActions.removeAssignment(taskId, resourceId)
@@ -47,7 +47,7 @@ export default {
       error: function(xhr, status, err) {
         console.error('assets/calendar.json', status, err.toString());
       }.bind(this)
-    }); 
+    });
   },
   updateResourceConstraints: (constraints) => {
     $.ajax({
@@ -65,6 +65,6 @@ export default {
       error: function(xhr, status, err) {
         console.error('assets/calendar.json', status, err.toString());
       }.bind(this)
-    }); 
+    });
   }
 }
