@@ -9,11 +9,13 @@ import $ from 'jquery';
 import React from 'react';
 
 var searchParams = new URLSearchParams(window.location.search); //?anything=123
+var calendar = searchParams.get("calendar")
+var schedule = searchParams.get("schedule")
 
 CalendarApiUtils.getCalendar();
 TaskApiUtils.getTasks();
 ResourceApiUtils.getResources();
-ScheduleApiUtils.getSchedule(searchParams.get("schedule"));
+ScheduleApiUtils.getSchedule(calendar, schedule);
 CounterApiUtils.getCounters();
 
 $(document).on("dblclick", () => {

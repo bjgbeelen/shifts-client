@@ -27,12 +27,16 @@ class ScheduleStore extends EventEmitter {
   }
 
   isAbsent(dayId, resourceId) {
-    // FIX ME
-    // const resourceConstraints = selectResourceConstraints(resourceId)
-    // return resourceConstraints && resourceConstraints.absence.filter( item => {
-    //   return item == dayId
-    // }).length > 0
-    return false
+    const resourceConstraints = selectResourceConstraints(resourceId)
+    return resourceConstraints && (
+      resourceConstraints
+      .filter(constraint => {return constraint.type == "AbsenceConstraint"})
+      .reduce( function(acc, constraint) {
+        return acc || constraint.absence.filter(item => {
+          return item == dayId
+        }).length > 0
+      }, false)
+    )
   }
 
   calculate(counter, resource) {
@@ -52,7 +56,7 @@ class ScheduleStore extends EventEmitter {
         constraints
         .filter( constraint => { return constraint.type == "CounterConstraint" })
         .forEach( counterConstraint =>
-          result[counterConstraint.counterId] = counterConstraint.desiredNumber
+          result[counterConstraint.counterId] = counterConstraint.desired
         )
       return {taskCount: result};
     }
@@ -97,16 +101,33 @@ AppDispatcher.register( payload => {
       scheduleStore.emit(Constants.SCHEDULE.NUMBER_CHANGE);
       break
     case Constants.CONSTRAINTS.TOGGLE_ABSENCE:
-      let constraints = selectResourceConstraints(ResourceStore.getSelectedResource().selectedResource);
-      constraints.absence = toggleAbsence(constraints.absence, action.days);
-      scheduleStore.emit(Constants.CONSTRAINTS.UPDATED);
-      ScheduleApiUtils.updateResourceConstraints(constraints);
-      break
+      let selectedResource = ResourceStore.getSelectedResource().selectedResource
+      if (selectedResource) {
+        let absenceConstraint = selectResourceConstraints(selectedResource, "AbsenceConstraint");
+        let otherConstraints = selectResourceConstraints(selectedResource, "AbsenceConstraint", true);
+        absenceConstraint[0].absence = toggleAbsence(absenceConstraint[0].absence, action.days);
+        let resourceConstraints = otherConstraints.concat(absenceConstraint)
+        let updatedConstraints = _schedule.resourceConstraints
+        updatedConstraints[selectedResource] = resourceConstraints;
+        scheduleStore.emit(Constants.CONSTRAINTS.UPDATED);
+        var searchParams = new URLSearchParams(window.location.search);
+        var calendar = searchParams.get("calendar");
+        var schedule = searchParams.get("schedule");
+        ScheduleApiUtils.updateResourceConstraints(calendar, schedule, updatedConstraints);
+        break
+      }
   }
 });
 
-function selectResourceConstraints(resource) {
-  return _schedule.resourceConstraints[resource]
+function selectResourceConstraints(resource, _type, reverse=false) {
+  let result = _schedule.resourceConstraints[resource]
+  if (result && _type) {
+    return result.filter(constraint => {
+      if (!reverse)
+        return constraint.type == _type;
+      else return constraint.type != _type
+    });
+  } else return result;
 }
 
 function toggleAbsence(absence, days) {

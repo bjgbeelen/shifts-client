@@ -7,6 +7,10 @@ import ResourceComponent from '../resource/ResourceComponent';
 import {DropTarget} from 'react-dnd';
 import React, {PropTypes} from 'react';
 
+var searchParams = new URLSearchParams(window.location.search); //?anything=123
+var calendar = searchParams.get("calendar");
+var schedule = searchParams.get("schedule");
+
 const taskTarget = {
   canDrop(props, monitor) {
     return !isDisabledTask(props.data.tags, props.absent);
@@ -16,12 +20,12 @@ const taskTarget = {
     const currentResource = component.state.resource;
     if (item.assignedToTask != undefined) {
       if (currentResource != undefined) {
-        ScheduleApiUtils.addAssignment(item.assignedToTask, currentResource.id)
+        ScheduleApiUtils.addAssignment(calendar, schedule, item.assignedToTask, currentResource.id)
       } else {
-        ScheduleApiUtils.removeAssignment(item.assignedToTask, item.id);
-      }     
+        ScheduleApiUtils.removeAssignment(calendar, schedule, item.assignedToTask, item.id);
+      }
     }
-    ScheduleApiUtils.addAssignment(props.data.id, item.id);
+    ScheduleApiUtils.addAssignment(calendar, schedule, props.data.id, item.id);
   }
 }
 

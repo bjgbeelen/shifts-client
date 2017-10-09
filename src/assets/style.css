@@ -153,7 +153,7 @@
   width: 98%;
   overflow: hidden;
   float: right;
-  background-color: #ffffff;
+  background-color: #f7f7f7;
 }
 
 .month .week:first-of-type .day {
